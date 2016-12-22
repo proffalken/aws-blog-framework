@@ -1,0 +1,74 @@
+---
+# tasks file for aws-blog
+#
+- name: Create the group for the user
+  group:
+      name: aws-blog
+
+- name: Add the blog user
+  user:
+      name: aws-blog
+      groups: aws-blog,users
+
+- name: Make sure we can traverse the home directory
+  file:
+      name: /home/aws-blog
+      state: directory
+      owner: aws-blog
+      group: aws-blog
+      mode: 0755
+
+- name: create the SSH directory
+  become: True
+  become_user: aws-blog
+  file:
+      dest: /home/aws-blog/.ssh
+      owner: aws-blog
+      group: aws-blog
+      mode: 0755
+      state: directory
+
+- name: Upload the Private SSH key for deployments
+  become: True
+  become_user: aws-blog
+  template:
+      src: sshprivkey.j2
+      dest: /home/aws-blog/.ssh/id_rsa
+      owner: aws-blog
+      group: aws-blog
+      mode: 0600
+
+- name: Upload the Public SSH Key for deployments
+  become: True
+  become_user: aws-blog
+  template:
+      src: sshpubkey.j2
+      dest: /home/aws-blog/.ssh/id_rsa.pub
+      owner: aws-blog
+      group: aws-blog
+      mode: 0644
+
+- name: Create the application home directory
+  file:
+      name: /opt/webapps/
+      owner: aws-blog
+      group: aws-blog
+      mode: 0755
+      state: directory
+
+- name: Clone the sourcecode
+  become: True
+  become_user: aws-blog
+  git:
+      repo: git@bitbucket.com:proffalken/flask-blog
+      dest: /opt/webapps/aws-blog
+      accept_hostkey: True
+      key_file: /home/aws-blog/.ssh/id_rsa
+
+
+- name: Configure the application
+  template:
+      src: settings.py.j2
+      dest: /opt/webapps/aws-blog/settings.py
+      owner: aws-blog
+      group: aws-blog

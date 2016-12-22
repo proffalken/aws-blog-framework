@@ -1,0 +1,7 @@
+cluster.name: {{ elasticsearch_cluster_name | default('elasticsearch') }}
+node.name: {{ ansible_hostname }}
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: [{% for node in groups['es_servers'] %}"{{ node }}"{% if not loop.last %},{% endif %}{% endfor %}]
+bootstrap.mlockall: true
+network.bind_host: _{{elasticsearch_bind_interface|default('eth0')}}:ipv4_
+network.publish_host: _{{elasticsearch_bind_interface|default('eth0')}}:ipv4_

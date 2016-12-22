@@ -1,0 +1,70 @@
+---
+# tasks file for logstash
+# include the distro-specific stuff
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: rhel.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Make sure the logstash directory exists
+  file: name=/etc/logstash state=directory owner=root group=root mode=0755
+
+- name: Copy up the index template
+  copy: src=index.template.json dest=/etc/logstash/index.template.json
+
+- name: Install any plugins required
+  command: "/opt/logstash/bin/plugin install {{ item }}"
+  ignore_errors: true
+  with_items:
+    - logstash-output-elasticsearch
+    - logstash-filter-geoip
+    - logstash-codec-cloudtrail
+
+- name: Copy the logstash configs
+  copy: src={{ item }} dest=/etc/logstash/conf.d/{{ item }} owner=root group=root mode=0644
+  notify: Restart logstash
+  with_items:
+    - 10-syslog.conf
+    - 10-inputs.conf
+    - 20-windows-filters.conf
+
+- name: Copy the logstash configs from template
+  template: src={{ item }} dest=/etc/logstash/conf.d/{{ item }} owner=root group=root mode=0644
+  notify: Restart logstash
+  with_items:
+    - 16-aws_s3_buckets.conf
+    - 30-elasticsearch-output.conf
+
+- name: Create the consul service
+  copy: src=logstash_consul.conf dest=/etc/consul.d/logstash.service.json
+  when: consul_enabled == True
+
+- name: Enable firewall ports for Windows logs
+  firewalld:
+    port: 3515-3517/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Enable firewall ports for Linux logs
+  firewalld:
+    port: 1514/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Enable firewall ports for lumberjack logs
+  firewalld:
+    port: 5000/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Tag agent with logstash_client in dataloop
+  command: "/usr/bin/dataloop-agent -a {{ dataloop_api_key }}  --add-tags  logstash_client"
+  when: logstashclient == True and dataloop_enabled == True
+
+- name: Tag agent with logstash in dataloop
+  command: "/usr/bin/dataloop-agent -a {{ dataloop_api_key }}  --add-tags  logstash_server"
+  when: dataloop_enabled == True and logstashserver == True

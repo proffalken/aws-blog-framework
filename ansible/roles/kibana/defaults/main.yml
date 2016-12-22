@@ -1,0 +1,4 @@
+---
+# defaults file for kibana
+kibana_use_ssl: True
+kibana_version: 4.4.0

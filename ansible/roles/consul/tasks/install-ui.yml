@@ -1,0 +1,54 @@
+- name: Create the UI Directory
+  file: >
+    state=directory
+    path={{consul_ui_dir}}
+    owner={{consul_user}}
+    group={{consul_group}}
+
+- name: download consul
+  get_url: >
+    url={{consul_ui_download}}
+    dest={{consul_download_folder}}
+  register: consul_ui_was_downloaded
+
+- name: copy and unpack
+  unarchive: >
+    src={{ consul_download_folder }}/{{ consul_ui_archive }}
+    dest={{ consul_home }}/dist
+    copy=no
+  when: consul_ui_was_downloaded|changed
+
+- name: set ownership
+  file: >
+    state=directory
+    path={{consul_ui_dir}}
+    owner={{consul_user}}
+    group={{consul_group}}
+    recurse=yes
+  when: consul_ui_was_downloaded|changed
+
+
+- name: Delete the default Nginx Config
+  file: name=/etc/nginx/sites-enabled/default state=absent
+  notify: restart nginx
+
+- name: consul create nginx config
+  template: >
+    src=consul-nginx.conf.j2
+    dest=/etc/nginx/sites-enabled/consul
+    owner=root
+    group=root
+    mode=0755
+  when: consul_is_ui
+  notify:
+    - restart nginx  
+
+- name: create nginx home
+  file: >
+    state=directory
+    path=/var/www/consul/htdocs
+    owner=root
+    group=root
+    mode=0755
+  notify:
+    - restart nginx

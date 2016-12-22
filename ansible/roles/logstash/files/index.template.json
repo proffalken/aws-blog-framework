@@ -1,0 +1,21 @@
+{
+   "template" : "logstash-*",
+   "mappings" : {
+      "_default_" : {
+         "properties" : {
+            "geoip" : {
+               "path" : "full",
+               "type" : "object",
+               "dynamic" : true,
+               "properties" : {
+                  "location" : {
+                     "type" : "geo_point"
+                  }
+               }
+            }
+         }
+      }
+   },
+   "order" : 0
+}
+

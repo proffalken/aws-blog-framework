@@ -1,0 +1,8 @@
+port: 5601
+kibana_index: ".kibana"
+elasticsearch.url: "http://elasticsearch.service.consul:9200"
+default_app_id: "discover"
+request_timeout: 300000
+shard_timeout: 0
+verify_ssl: true
+

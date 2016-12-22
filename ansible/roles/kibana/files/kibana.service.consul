@@ -1,0 +1,9 @@
+{
+   "service" : {
+      "name" : "kibana",
+      "tags" : [
+         "kibana"
+      ],
+      "port" : 5601
+   }
+}

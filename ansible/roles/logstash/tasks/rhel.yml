@@ -1,0 +1,17 @@
+---
+# tasks file for logstash
+- name: Add the GPG key for yum
+  command: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Add the yum repository
+  copy:
+      src: logstash.repo.j2
+      dest: /etc/yum.repos.d/
+      owner: root
+      group: root
+      mode: 0644
+
+- name: Install logstash
+  yum:
+      name: logstash
+      state: installed

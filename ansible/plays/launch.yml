@@ -1,0 +1,133 @@
+---
+- hosts: ec2
+  become: True
+  become_user: root
+  become_user: root
+  roles:
+      - baseline_security
+      - firewalld
+      - ntp
+      - rsyslog
+      - sudo
+      - yum
+  vars:
+    use_logstash: True
+    dns_servers: ['127.0.0.1','8.8.8.8']
+    nssearch: "consul"
+    ntp_server: "0.uk.pool.ntp.org"
+
+- hosts: consul_servers
+  become: True
+  become_user: root
+  roles:
+    - nginx
+    - {role: consul, tags: ['consul'] }
+  vars:
+    consul_is_server: True
+    consul_is_ui: True
+    consul_bootstrap: True
+    use_logstash: True
+    consul_bind_address: "0.0.0.0"
+    consul_advertise_address: "{{ ansible_default_ipv4.address }}"
+    consul_client_address: "{{ ansible_default_ipv4.address }}"
+    consul_datacenter: "aws-blog"
+    dataloop_enabled: False
+    consul_servers: ["{{ hostvars[groups['consul_servers'][0]]['ansible_eth0']['ipv4']['address'] }}"]
+
+- hosts: consul_clients
+  become: True
+  become_user: root
+  roles:
+    - consul
+  vars:
+    consul_join_at_start: True
+    consul_bind_address: "0.0.0.0"
+    consul_datacenter: "aws-blog"
+    consul_servers: ["{{ hostvars[groups['consul_servers'][0]]['ansible_eth0']['ipv4']['address'] }}"]
+    dataloop_enabled: False
+    consul_enabled: True
+
+- hosts: es_servers
+  become: True
+  become_user: root
+  roles:
+   - elasticsearch
+  vars:
+    elasticsearch_cluster_name: "logstash"
+    elasticsearch_bind_interface: "eth0"
+    consul_enabled: True
+    consul_bind_address: "0.0.0.0"
+    consul_datacenter: "aws-blog"
+    dataloop_enabled: False
+
+- hosts: ec2
+  become: True
+  become_user: root
+  tasks:
+    - name: Restart the consul service on all nodes to pickup new configs
+      service: name=consul state=restarted
+
+- hosts: logstash_servers
+  become: True
+  become_user: root
+  roles:
+   - rsyslog
+   - logstash
+  vars:
+    logstashserver: True
+    elasticsearch_cluster_name: "logstash"
+    use_logstash: True
+    consul_enabled: True
+    consul_bind_address: "0.0.0.0"
+    consul_datacenter: "aws-blog"
+    dataloop_enabled: False
+
+- hosts: ec2
+  become: True
+  become_user: root
+  tasks:
+    - name: Restart the consul service on all nodes to pickup new configs
+      service: name=consul state=restarted
+
+- hosts: kibana_servers
+  become: True
+  become_user: root
+  roles:
+   - kibana
+  vars:
+    dataloop_enabled: False
+    consul_enabled: True
+    consul_bind_address: "0.0.0.0"
+    consul_datacenter: "aws-blog"
+    kibana_use_ssl: False
+    kibana_basic_auth: "logs:$apr1$SNzo8rdW$5ehO5H7wUzSj2fd/3eQuD."
+    use_packetbeat: False
+
+- hosts: ec2
+  become: True
+  become_user: root
+  tasks:
+    - name: Restart the consul service on all nodes to pickup new configs
+      service: name=consul state=restarted
+
+- hosts: logstash_servers
+  become: True
+  become_user: root
+  tasks:
+    - name: Restart the logstash service on all nodes to pickup new configs
+      service: name=logstash state=restarted
+
+- hosts: kibana_servers
+  become: True
+  become_user: root
+  tasks:
+    - name: Restart the kibana service on all nodes to pickup new configs
+      service: name=kibana state=restarted
+
+
+- hosts: webservers
+  become: True
+  become_user: root
+  roles:
+    - nginx
+    - aws-blog

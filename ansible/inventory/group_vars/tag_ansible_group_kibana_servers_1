@@ -1,0 +1,3 @@
+---
+kibana_basic_auth: "logs:$apr1$SNzo8rdW$5ehO5H7wUzSj2fd/3eQuD."
+use_packetbeat: False

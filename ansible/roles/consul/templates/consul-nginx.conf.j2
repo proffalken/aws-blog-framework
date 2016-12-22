@@ -1,0 +1,33 @@
+server {
+  server_name {{ consul_web_url | default(ansible_fqdn) }} {{ ansible_default_ipv4.address }};
+  root /var/www/consul/dist;
+
+  # --- listen ----------------------------------------------------------------
+
+  listen *:80;
+
+
+    # --- rule ------------------------------------------------------------------
+#    include rules/gzip.conf;
+#    include rules/security.conf;
+
+
+  # --- locations -------------------------------------------------------------
+
+
+  location / {
+      proxy_pass http://{{ ansible_default_ipv4.address }}:8500;
+      {%- if consul_ui_require_auth -%}
+      auth_basic "Restricted";
+      auth_basic_user_file {{ consul_ui_auth_user_file }};
+      {% endif %}
+  }
+
+
+
+  # --- logging ---------------------------------------------------------------
+
+  error_log /var/log/nginx/error-consul.log;
+  access_log /var/log/nginx/access-consul.log;
+
+  }

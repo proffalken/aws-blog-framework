@@ -1,0 +1,8 @@
+---
+# Debian Specific Install details
+- name: Install JAVA
+  apt: name={{ item }} state=present
+  with_items: debian_java_package
+
+- name: Add JAVA_HOME to the system profile
+  template: src=etc_profile.d_java_home.sh.j2 dest=/etc/profile.d/java_home.sh owner=root group=root

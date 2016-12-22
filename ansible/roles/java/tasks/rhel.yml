@@ -1,0 +1,5 @@
+---
+# RHEL/Centos Specific Install details
+- name: Install JAVA
+  yum: name={{ item }} state=present
+  with_items: rhel_java_package

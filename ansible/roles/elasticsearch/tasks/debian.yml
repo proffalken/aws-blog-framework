@@ -1,0 +1,16 @@
+---
+# Debian ElasticSearch Tasks
+
+- name: Add elasticsearch Apt Key
+  apt_key: url=https://packages.elasticsearch.org/GPG-KEY-elasticsearch
+
+- name: Add elasticsearch repo
+  apt_repository: repo='deb http://packages.elasticsearch.org/elasticsearch/2.x/debian stable main' state=present
+
+- name: Install elasticsearch
+  apt: name=elasticsearch state=installed
+
+- name: Set the Elasticsearch Defaults
+  template: src=etc_default_elasticsearch dest=/etc/default/elasticsearch owner=root group=root mode=644
+  notify: restart_elasticsearch
+

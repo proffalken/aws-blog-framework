@@ -1,0 +1,11 @@
+---
+# tasks file for logstash
+- name: Import DEB signing key
+  apt_key: url=http://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+
+- name: Add the debian repository for logstash
+  apt_repository: repo='deb http://packages.elasticsearch.org/logstash/2.0/debian stable main' state=present update_cache=yes
+
+- name: Install Logstash Server (Debian)
+  apt: name=logstash state=installed
+  when: logstashserver == True
