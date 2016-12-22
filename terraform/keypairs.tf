@@ -1,0 +1,4 @@
+resource "aws_key_pair" "aws-blog-deployer" {
+  key_name = "aws-blog-deployer-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDRyNQgYxF/k1TbXYC0B/1Mp9qagrm59v8tyvnwKim8s3x6XS4633wXkLmpyhTMTihi9SCoCkQEMD0Hguvji0SIeEYMu4UjtS9P6GkxB83LfLAxUtFfHZwVnNQj5xf6JXxPcIMJkDj1/wvTjhEcGwf7EeTP8eiWjynw0/dNvRwaRDVFCV6PJGHEUrF9J9lu9DWTIsubLiymjhLT/3NcLS+PpIHLQsxVXnHaiY3sMI3f5GVy1PizHMXhzUue/8mpTwoOkHLfA3AaKmYY09DYuCTA3HVMFDBPpsx8w/S2ZVL12/c69CHPWfN2fi+uO2eDiCh8B7lUtEb5zVsfSE/17qFD mmw@miniwopr"
+}
