@@ -4,7 +4,7 @@ resource "aws_subnet" "private" {
   cidr_block        = "${var.private_subnet_cidr}"
   availability_zone = "eu-west-1a"
   map_public_ip_on_launch = false
-/*  depends_on = ["aws_instance.nat"] */
+  depends_on = ["aws_instance.nat"] 
   tags {
     Name = "private"
   }
