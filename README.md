@@ -6,7 +6,7 @@ Look no further than this repository!
 
 ## What are you providing?
 
-* A blogging platform based on the Python Flask framework
+* A blogging platform based on https://github.com/proffalken/flask-blog
 * An Amazon RDS backend
 * A secure hosting environment (host access is via a bastion host, web only
   access is via an Elastic Load Balancer)
