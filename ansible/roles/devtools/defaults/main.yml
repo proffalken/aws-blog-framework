@@ -1,0 +1,8 @@
+---
+# defaults file for devtools
+dev_packages_rhel:
+    - gcc
+    - gcc-c++
+    - make
+    - openssl-devel
+    - python-devel

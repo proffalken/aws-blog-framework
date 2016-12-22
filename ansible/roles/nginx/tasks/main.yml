@@ -1,0 +1,22 @@
+---
+# tasks file for nginx
+# include the distro-specific stuff
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: rhel.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Copy in the rsyslog configuration
+  copy: src=rsyslog_config.conf dest=/etc/rsyslog.d/35-nginx.conf owner=root group=root mode=0644
+  notify: restart rsyslog
+
+- name: Set the firewall rules
+  firewalld:
+    state: enabled
+    immediate: true
+    permanent: true
+    port: "{{ item }}"
+  with_items:
+    - 80/tcp
+    - 443/tcp

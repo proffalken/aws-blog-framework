@@ -1,0 +1,27 @@
+---
+platforms:
+  - name: centos-7
+    driver:
+      tags:
+        Name: centos-7-test-kitchen-firewalld
+    transport:
+      username: centos
+    verifier:
+      bundler_path: /opt/rh/ruby200/root/usr/local/bin
+      rspec_path: /opt/rh/ruby200/root/usr/local/bin
+  # - name: ubuntu-16.04
+  #   driver:
+  #     tags:
+  #       Name: ubuntu-1604-test-kitchen-elk
+  #   transport:
+  #     username: ubuntu
+
+suites:
+  - name: firewalld
+    verifier:
+      patterns:
+        - "roles/*/test/integration/firewalld/serverspec/*_spec.rb"
+verifier:
+  name: serverspec
+  additional_install_command: 'sudo -E -H yum -y install ruby-devel; sudo gem install io-console'
+  sudo_path: true

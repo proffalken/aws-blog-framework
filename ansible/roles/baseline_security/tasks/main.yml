@@ -1,0 +1,28 @@
+---
+# tasks file for pam
+# include the distro-specific stuff
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: rhel.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      #
+## Generic settings
+- name: Set security limits
+  template: src=etc_login.defs.j2 dest=/etc/login.defs owner=root group=root mode=0644
+
+- name: Copy the templates to the correct location
+  template:
+      src: "{{ item.template_name }}"
+      dest: "{{ item.template_destination }}/{{ item.template_name }}"
+      mode: "{{ item.template_mode | default('0640') }}"
+      owner: "{{ item.template_owner  | default('root') }}"
+      group: "{{ item.template_group  | default('root') }}"
+  with_items: "{{ baseline_security.templates }}"
+
+- name: Set the SSH Server Timeout
+  lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: "^ClientAliveInterval"
+      line: "ClientAliveInterval {{ user_inactivity_timeout }}"
+  notify: restart ssh server

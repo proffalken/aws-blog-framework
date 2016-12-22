@@ -1,0 +1,16 @@
+---
+# Debian-specific tasks
+
+- name: Install nginx
+  apt: name=nginx state=present
+
+- name: Configure NGinx Core
+  template: src=etc_nginx_nginx.conf dest=/etc/nginx/nginx.conf owner=root group=root mode=0644
+  notify: restart nginx
+
+- name: Copy the default nginx site config so we can have monitoring
+  copy: src=default.conf dest=/etc/nginx/conf.d/default.conf owner=root group=root mode=0644
+  notify: restart nginx
+
+- name: Remove the default site
+  file: name=/etc/nginx/sites-enabled/default state=absent

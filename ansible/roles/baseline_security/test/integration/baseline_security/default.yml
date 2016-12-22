@@ -1,0 +1,7 @@
+---
+- name: Configure the Baseline Security
+  hosts: all
+  become: true
+  become_user: root
+  roles:
+      - baseline_security

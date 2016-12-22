@@ -1,0 +1,13 @@
+---
+# RHEL/CentOS specific SUDO stuff
+- name: Install sudo
+  yum: name=sudo state=present
+
+- name: Add the "sudo" group
+  group: name=sudo system=yes state=present
+
+- name: Remove requiretty line
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'Defaults    requiretty'
+    state: absent

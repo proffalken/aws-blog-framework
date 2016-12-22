@@ -1,0 +1,19 @@
+---
+platforms:
+  - name: ubuntu-14.04
+    provision_command: sudo gem install busser
+    driver:
+      instance_type: c4.large
+    tags:
+      - Name: ubuntu-14.04-test-kitchen-nginx
+  - name: centos-7
+    provision_command: yum install -y rubygem-rake && sudo gem install busser
+    tags:
+      - Name: centos-7-test-kitchen-nginx
+
+suites:
+  - name: nginx
+
+verifier:
+  sudo_command: sudo
+

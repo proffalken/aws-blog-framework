@@ -1,0 +1,28 @@
+---
+# ntp-server rhel tasks
+
+- name: Ensure NTP is installed
+  yum:
+    name: ntp
+    state: latest
+
+- name: Install NTP configuration
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: ntp_restart_el
+
+- name: Ensure the chronyd service has been stopped and disabled
+  service:
+    name: chronyd
+    enabled: no
+    state: stopped
+
+- name: Ensure the ntp service has been enabled
+  service:
+    name: ntpd
+    enabled: yes
+    state: started

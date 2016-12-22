@@ -1,0 +1,31 @@
+---
+# defaults file for apache
+
+rhel_common_packages: 
+    - libselinux-python
+    - python-devel
+    - python-pip
+    - bzip2
+    - curl
+    - gawk
+    - gzip
+    - git
+    - ksh
+    - lsof
+    - nc
+    - perl
+    - screen
+    - sed
+    - strace
+    - sysstat
+    - telnet
+    - tmux
+    - unzip
+    - vim
+    - wget
+    - zip
+
+deb_common_packages: 
+    - python-apt 
+    - apt-transport-https
+    - git

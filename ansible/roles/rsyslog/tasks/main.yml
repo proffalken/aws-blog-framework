@@ -1,0 +1,6 @@
+---
+# tasks file for rsyslog
+- name: Copy in logstash config
+  template: src=15-log_to_logstash.conf dest=/etc/rsyslog.d/15-log_to_logstash.conf owner=root group=root
+  when: use_logstash == True
+  notify: restart rsyslog

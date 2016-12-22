@@ -1,0 +1,22 @@
+---
+# ntp-server debian tasks
+
+- name: Ensure NTP is installed
+  apt:
+    name: ntp
+    state: latest
+
+- name: Install NTP configuration
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: ntp_restart_deb
+
+- name: Ensure the ntp service has been enabled
+  service:
+    name: ntp
+    enabled: yes
+    state: started

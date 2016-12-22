@@ -1,0 +1,14 @@
+---
+# ntp handlers
+
+  - name: ntp_restart_el
+    service:
+      name: ntpd
+      state: restarted
+      enabled: yes
+
+  - name: ntp_restart_deb
+    service:
+      name: ntp
+      state: restarted
+      enabled: yes

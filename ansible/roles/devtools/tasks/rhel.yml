@@ -1,0 +1,7 @@
+---
+# tasks file for devtools
+- name: Install the RHEL/CentOS packages
+  yum:
+      name: "{{ item }}"
+      state: installed
+  with_items: "{{ dev_packages_rhel }}"

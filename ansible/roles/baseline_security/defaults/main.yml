@@ -1,0 +1,17 @@
+---
+# defaults file for baseline_security
+
+user_inactivity_timeout: 300
+baseline_security:
+    templates:
+        - template_name: 'autologout.sh'
+          template_destination: '/etc/profile.d'
+          template_mode: '0755'
+          template_owner: 'root'
+          template_group: 'root'
+    login_defs:
+        PASS_MAX_DAYS: 90
+        PASS_MIN_DAYS: 0
+        PASS_WARN_AGE: 7
+        PASS_MIN_LEN: 9
+        LOGIN_RETRIES: 3

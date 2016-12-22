@@ -1,0 +1,86 @@
+---
+platforms:
+  - name: debian-7
+    transport:
+      username: admin
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-debian-7
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: debian-7
+  - name: debian-8
+    transport:
+      username: admin
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-debian-8
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: debian-8
+  - name: centos-6
+    transport:
+      username: centos
+    # Ruby 2.0 is installed in custom location. Override these calls to ensure
+    # that serverspec can be installed and run (otherwise it won't be found)
+    verifier:
+      bundler_path: /opt/rh/ruby200/root/usr/local/bin
+      rspec_path: /opt/rh/ruby200/root/usr/local/bin
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-centos-6
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: centos-6
+  - name: centos-7
+    transport:
+      username: centos
+    verifier:
+      bundler_path: /opt/rh/ruby200/root/usr/local/bin
+      rspec_path: /opt/rh/ruby200/root/usr/local/bin
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-centos-7
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: centos-7
+  - name: ubuntu-14.04
+    transport:
+      username: ubuntu
+    # The Omnibus provisioner doesn't work correctly on Ubuntu boxes atm
+    provisioner:
+      require_ansible_omnibus: false
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-ubuntu-1404
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: ubuntu-14.04
+  - name: ubuntu-16.04
+    transport:
+      username: ubuntu
+    provisioner:
+      require_ansible_omnibus: false
+    driver:
+      tags:
+        Name: ansible-test-kitchen-role-baselinesecurity-ubuntu-1604
+        CreatedBy: TestKitchen
+        TestKitchenRole: baselinesecurity
+        TestKitchenPlatform: ubuntu-16.04
+
+suites:
+  - name: baseline_security
+    verifier:
+      patterns:
+        - "roles/*/test/integration/baseline_security/serverspec/*_spec.rb"
+
+provisioner:
+  name: ansible_playbook
+  hosts: all
+  require_ansible_omnibus: true
+  require_ruby_for_busser: true
+  require_chef_for_busser: false
+
+verifier:
+  name: serverspec
+  sudo_path: true

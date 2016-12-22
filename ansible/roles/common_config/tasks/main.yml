@@ -1,0 +1,33 @@
+---
+# tasks file for Common Config
+# include the distro-specific stuff
+- include: debian.yml
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+
+- include: rhel.yml
+  when: ansible_distribution == "CentOS" or ansible_distribution == "Red Hat Enterprise Linux"
+
+- name: Build hosts file
+  lineinfile:
+      dest: /etc/hosts
+      regexp: ".*{{ item }}$"
+      line: "{{ hostvars[item].ansible_default_ipv4.address }} {{item}}"
+      state: present
+  when: hostvars[item].ansible_default_ipv4.address is defined
+  with_items: "{{ groups['all'] }}"
+
+- name: Create the directory for sudoers if it doesn"t already exist.
+  file:
+    name: /etc/sudoers.d
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: Upload the default sudoers file
+  template:
+    src: sudoers.master
+    dest: /etc/sudoers
+    owner: root
+    group: root
+    mode: 0440

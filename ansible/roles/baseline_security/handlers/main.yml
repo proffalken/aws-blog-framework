@@ -1,0 +1,13 @@
+---
+# handlers file for baseline_security
+- name: restart ssh server
+  service:
+      name: ssh
+      state: restarted
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: restart ssh server
+  service:
+      name: sshd
+      state: restarted
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'RedHat'
