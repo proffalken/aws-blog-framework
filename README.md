@@ -16,13 +16,16 @@ Look no further than this repository!
 ## What do I need to do?
 
 * Clone this git repository:
+
   ```
-  git clone <REPO>
-  cd <REPO>
+  git clone https://github.com/proffalken/aws-blog-framework
+
+  cd aws-blog-framework
   ```
 * Run the installer script
+
   ```
   bash ./installer.sh
   ```
 * Update your DNS server records with the ones the script provides
-* Browse to www.<yourdomain>.<yourtld> and start working on the site!
+* Browse to www.yourdomain.yourtld and start working on the site!
