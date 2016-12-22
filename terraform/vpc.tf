@@ -2,7 +2,7 @@ resource "aws_vpc" "aws-blog" {
   cidr_block = "${var.vpc_cidr}"
   enable_dns_hostnames = true
   tags {
-    Name = "lunchtimetrains"
+    Name = "aws-blog"
   }
 }
 /* Create an S3 Bucket for ELB Logs so we can process them in ELK */
