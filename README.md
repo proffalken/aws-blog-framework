@@ -12,6 +12,8 @@ Look no further than this repository!
   access is via an Elastic Load Balancer)
 * AWS Hosted DNS via Route 53
 * Free SSL Certificates via "letsencrypt"
+* A centralised logging cluster based on ELK and Consul based on the work at
+  https://doics.co/2015/05/18/increase-your-elk-herd-with-consul-io/
 
 ## What do I need to do?
 
