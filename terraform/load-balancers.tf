@@ -1,7 +1,7 @@
 /* Load balancer */
 resource "aws_elb" "web" {
   name = "aws-blog-web-elb"
-  subnets = ["${aws_subnet.public.id}"]
+  subnets = ["${aws_subnet.public-aws-blog.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.elb_access.id}"]
   listener {
     instance_port = 80
@@ -35,7 +35,7 @@ resource "aws_lb_cookie_stickiness_policy" "web" {
 /* Load balancer */
 resource "aws_elb" "kibana" {
   name = "aws-blog-kibana-elb"
-  subnets = ["${aws_subnet.public.id}"]
+  subnets = ["${aws_subnet.public-aws-blog.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.elb_access.id}"]
   listener {
     instance_port = 5601
@@ -69,7 +69,7 @@ resource "aws_lb_cookie_stickiness_policy" "kibana" {
 /* Load balancer */
 resource "aws_elb" "consul" {
   name = "aws-blog-consul-elb"
-  subnets = ["${aws_subnet.public.id}"]
+  subnets = ["${aws_subnet.public-aws-blog.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.elb_access.id}"]
   listener {
     instance_port = 80

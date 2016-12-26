@@ -3,7 +3,7 @@ resource "aws_instance" "kibana" {
   count = 2
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "t2.medium"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${aws_subnet.private-aws-blog.id}"
   security_groups = ["${aws_security_group.kibana.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
@@ -19,7 +19,7 @@ resource "aws_instance" "elasticsearch" {
   count = 3
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "m3.large"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${aws_subnet.private-aws-blog.id}"
   security_groups = ["${aws_security_group.elasticsearch.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
@@ -35,7 +35,7 @@ resource "aws_instance" "logstash" {
   count = 2
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "t2.medium"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${aws_subnet.private-aws-blog.id}"
   security_groups = ["${aws_security_group.logstash.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false

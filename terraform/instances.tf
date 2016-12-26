@@ -1,7 +1,7 @@
 resource "aws_instance" "web" {
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "t2.nano"
-  subnet_id = "${aws_subnet.private.id}"
+  subnet_id = "${aws_subnet.private-aws-blog.id}"
   vpc_security_group_ids = ["${aws_security_group.default.id}","${aws_security_group.web.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
