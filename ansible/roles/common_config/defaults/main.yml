@@ -3,6 +3,7 @@
 
 rhel_common_packages: 
     - NetworkManager
+    - NetworkManager-glib
     - libselinux-python
     - python-devel
     - python-pip
