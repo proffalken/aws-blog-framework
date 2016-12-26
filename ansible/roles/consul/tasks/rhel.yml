@@ -32,7 +32,7 @@
 - name: Install python-consul system wide
   pip:
       name: python-consul
-      state: installed
+      state: present
 
 - name: Delete the default Nginx Config
   file:
