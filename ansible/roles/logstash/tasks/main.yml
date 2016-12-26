@@ -36,8 +36,10 @@
     - 16-aws_s3_buckets.conf
     - 30-elasticsearch-output.conf
 
-- name: Create the consul service
-  copy: src=logstash_consul.conf dest=/etc/consul.d/logstash.service.json
+- name: Register the consul service
+  consul:
+      service_name: logstash
+      service_port: 5154
   when: consul_enabled == True
 
 - name: Enable firewall ports for Windows logs

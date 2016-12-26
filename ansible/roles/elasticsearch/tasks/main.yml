@@ -14,8 +14,10 @@
   template: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
   notify: restart_elasticsearch
 
-- name: Create the consul service
-  copy: src=elasticsearch_consul.conf dest=/etc/consul.d/elasticsearch.service.json
+- name: Register with Consul
+  consul:
+      service_name: elasticsearch
+      service_port: 9200
   when: consul_enabled and consul_enabled == True
 
 - name: Enable the relevant plugins
