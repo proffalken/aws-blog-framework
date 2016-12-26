@@ -5,7 +5,7 @@
 
 - name: Add the yum repository
   copy:
-      src: logstash.repo.j2
+      src: logstash.repo
       dest: /etc/yum.repos.d/
       owner: root
       group: root
