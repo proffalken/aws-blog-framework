@@ -2,6 +2,7 @@
 # defaults file for apache
 
 rhel_common_packages: 
+    - NetworkManager
     - libselinux-python
     - python-devel
     - python-pip
