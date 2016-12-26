@@ -23,6 +23,13 @@ resource "aws_instance" "elasticsearch" {
   security_groups = ["${aws_security_group.elasticsearch.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
+  ebs_block_device {
+     device_name = "/dev/sdl"
+     volume_size = "5"
+     volume_type = "standard"
+     delete_on_termination = true
+     encrypted = true
+  }
   tags = { 
     Name = "elasticsearch-app-${count.index}-aws-blog"
     ansible_group_elasticsearch_servers = "1"
