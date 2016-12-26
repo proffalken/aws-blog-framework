@@ -50,6 +50,7 @@
   become: True
   become_user: root
   roles:
+   - java
    - elasticsearch
   vars:
     elasticsearch_cluster_name: "logstash"
@@ -69,6 +70,7 @@
   become: True
   become_user: root
   roles:
+   - java
    - rsyslog
    - logstash
   vars:
