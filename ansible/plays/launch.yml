@@ -31,7 +31,6 @@
     consul_advertise_address: "{{ ansible_default_ipv4.address }}"
     consul_client_address: "{{ ansible_default_ipv4.address }}"
     consul_datacenter: "aws-blog"
-    dataloop_enabled: False
     consul_servers: ["{{ hostvars[groups['consul_servers'][0]]['ansible_eth0']['ipv4']['address'] }}"]
 
 - hosts: consul_clients
@@ -44,7 +43,6 @@
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"
     consul_servers: ["{{ hostvars[groups['consul_servers'][0]]['ansible_eth0']['ipv4']['address'] }}"]
-    dataloop_enabled: False
     consul_enabled: True
 
 - hosts: es_servers
@@ -58,7 +56,6 @@
     consul_enabled: True
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"
-    dataloop_enabled: False
 
 - hosts: ec2
   become: True
@@ -80,7 +77,6 @@
     consul_enabled: True
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"
-    dataloop_enabled: False
 
 - hosts: ec2
   become: True
@@ -95,7 +91,6 @@
   roles:
    - kibana
   vars:
-    dataloop_enabled: False
     consul_enabled: True
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"

@@ -25,7 +25,3 @@
    service: ssh
    permanent: true
    state: enabled
-
-- name: Tag agent with firewalld in dataloop
-  command: /usr/bin/dataloop-agent -a {{ dataloop_api_key }} --add-tags firewalld
-  when: use_dataloop is defined and use_dataloop == True

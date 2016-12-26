@@ -6,8 +6,3 @@
 #
 - include: rhel.yml
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
-
-- name: Tag agent with java in dataloop
-  command: /usr/bin/dataloop-agent -a {{ dataloop_api_key }} --add-tags java
-  when: dataloop_enabled == True

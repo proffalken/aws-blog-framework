@@ -60,11 +60,3 @@
     permanent: true
     state: enabled
     immediate: true
-
-- name: Tag agent with logstash_client in dataloop
-  command: "/usr/bin/dataloop-agent -a {{ dataloop_api_key }}  --add-tags  logstash_client"
-  when: logstashclient == True and dataloop_enabled == True
-
-- name: Tag agent with logstash in dataloop
-  command: "/usr/bin/dataloop-agent -a {{ dataloop_api_key }}  --add-tags  logstash_server"
-  when: dataloop_enabled == True and logstashserver == True
