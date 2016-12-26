@@ -22,3 +22,7 @@ output "web_elb" {
 output "consul_elb" {
   value = "${aws_elb.consul.dns_name}"
 }
+
+output "vpc_subnet" {
+  value = "${var.vpc_cidr}"
+}
