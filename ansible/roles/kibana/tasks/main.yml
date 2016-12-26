@@ -7,18 +7,28 @@
 - include: rhel.yml
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
+- name: Copy the Kibana config
+  template:
+      src: kibana.yml
+      dest: /etc/kibana/kibana.yml
+      owner: root
+      group: root
+      mode: 0644
+
 - name: Start the kibana service
   service: name=kibana state=started
 
-- name: Insert the Kibana Service definition into Consul
-  copy: src=kibana.service.consul dest=/etc/consul.d/kibana.service.json
-  when: consul_enabled and consul_enabled == True
+- name: Register the consul service
+  consul:
+      service_name: kibana
+      service_port: 5601
+  when: consul_enabled == True
 
 - name: Install and enable the kibana plugins
-  command: "/opt/kibana/bin/kibana plugin --install {{ item }}"
+  command: "/usr/share/kibana/bin/kibana-plugin install --batch {{ item }}"
   ignore_errors: true
   with_items:
-    - elasticsearch/marvel/latest
+    - xpack
 
 - name: Open the firewall for Kibana
   firewalld:
