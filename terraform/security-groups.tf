@@ -40,14 +40,14 @@ resource "aws_security_group" "nat" {
     from_port = 80
     to_port = 80
     protocol = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
   }
 
   ingress {
     from_port = 443
     to_port = 443
     protocol = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
   }
 
   egress {
@@ -161,7 +161,7 @@ resource "aws_security_group" "consul_servers" {
     from_port = 8300
     to_port   = 8303
     protocol  = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
     self = true
   }
 
@@ -169,7 +169,7 @@ resource "aws_security_group" "consul_servers" {
     from_port = 8400
     to_port   = 8400
     protocol  = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
     self = true
   }
 
@@ -177,7 +177,7 @@ resource "aws_security_group" "consul_servers" {
     from_port = 8500
     to_port   = 8500
     protocol  = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
     self = true
   }
 
@@ -185,7 +185,7 @@ resource "aws_security_group" "consul_servers" {
     from_port = 8600
     to_port   = 8600
     protocol  = "tcp"
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
     self = true
   }
 
@@ -221,7 +221,7 @@ resource "aws_security_group" "kibana" {
     to_port     = "8301"
     protocol    = "tcp"
     self        = true
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
   }
 
   ingress {
@@ -278,14 +278,14 @@ resource "aws_security_group" "logstash" {
     to_port     = "8303"
     protocol    = "tcp"
     self        = true
-    cidr_blocks = ["10.128.0.0/24"]
+    cidr_blocks = ["10.235.0.0/24"]
   }
 
   ingress {
     from_port = 1514
     to_port   = 1514
     protocol  = "tcp"
-    cidr_blocks = ["10.128.0.0/24"]
+    cidr_blocks = ["10.235.0.0/24"]
     self = true
   }
 
@@ -293,7 +293,7 @@ resource "aws_security_group" "logstash" {
     from_port = 1514
     to_port   = 1514
     protocol  = "udp"
-    cidr_blocks = ["10.128.0.0/24"]
+    cidr_blocks = ["10.235.0.0/24"]
     self = true
   }
 
@@ -302,7 +302,7 @@ resource "aws_security_group" "logstash" {
     from_port = 514
     to_port   = 514
     protocol  = "tcp"
-    cidr_blocks = ["10.128.0.0/24"]
+    cidr_blocks = ["10.235.0.0/24"]
     self = true
   }
 
@@ -311,7 +311,7 @@ resource "aws_security_group" "logstash" {
     from_port = 514
     to_port   = 514
     protocol  = "udp"
-    cidr_blocks = ["10.128.0.0/16"]
+    cidr_blocks = ["10.235.0.0/16"]
     self = true
   }
 
@@ -320,7 +320,7 @@ resource "aws_security_group" "logstash" {
     from_port = 3515
     to_port   = 3517
     protocol  = "tcp"
-    cidr_blocks = ["10.128.0.0/16"]
+    cidr_blocks = ["10.235.0.0/16"]
   }
 
   /* Windows Metrics UDP */
@@ -328,7 +328,7 @@ resource "aws_security_group" "logstash" {
     from_port = 3515
     to_port   = 3517
     protocol  = "udp"
-    cidr_blocks = ["10.128.0.0/16"]
+    cidr_blocks = ["10.235.0.0/16"]
   }
 
   /* Graphite Metrics */
@@ -336,14 +336,14 @@ resource "aws_security_group" "logstash" {
     from_port = 2003
     to_port   = 2003
     protocol  = "tcp"
-    cidr_blocks = ["10.128.0.0/16"]
+    cidr_blocks = ["10.235.0.0/16"]
   }
 
   ingress {
     from_port = 2003
     to_port   = 2003
     protocol  = "udp"
-    cidr_blocks = ["10.128.0.0/16"]
+    cidr_blocks = ["10.235.0.0/16"]
   }
 
   egress {
@@ -376,7 +376,7 @@ resource "aws_security_group" "elasticsearch" {
     to_port     = "8301"
     protocol    = "tcp"
     self        = true
-    cidr_blocks = ["10.128.1.0/24"]
+    cidr_blocks = ["10.235.1.0/24"]
   }
 
   ingress {
