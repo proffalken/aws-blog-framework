@@ -10,3 +10,15 @@ output "ns2" {
 output "ns3" {
   value = "${aws_route53_zone.flask-blog.name_servers.3}"
 }
+
+output "kibana_elb" {
+  value = "${aws_elb.kibana.dns_name}"
+}
+
+output "web_elb" {
+  value = "${aws_elb.web.dns_name}"
+}
+
+output "consul_elb" {
+  value = "${aws_elb.consul.dns_name}"
+}
