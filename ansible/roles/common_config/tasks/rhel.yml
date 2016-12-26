@@ -2,16 +2,4 @@
 # Redhat/CentOS specficic actions
 - name: Ensure common packages are installed
   yum:  name={{ item }} state=present
-  with_items: rhel_common_packages
-
-- name: Change to 64-bit inodes to avoid hash collisions
-  mount: 
-    name: "{{ item.mount }}"
-    src: "{{ item.device }}" 
-    fstype: "xfs" 
-    opts: "defaults"
-    state: mounted
-  with_items: hostvars[inventory_hostname].ansible_mounts
-  when: item.fstype == "xfs"
-
-
+  with_items: "{{ rhel_common_packages }}"
