@@ -1,5 +1,5 @@
 ---
 # defaults file for java
-debian_java_package: openjdk-7-jdk
-rhel_java_package: java-1.7.0-openjdk.x86_64
-java_home: /usr/lib/jvm/java-1.7.0-openjdk-amd64
+debian_java_package: openjdk-8-jdk
+rhel_java_package: java-1.8.0-openjdk.x86_64
+java_home: /usr/lib/jvm/java-1.8.0-openjdk-amd64
