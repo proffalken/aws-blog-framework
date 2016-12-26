@@ -13,10 +13,25 @@
       name: consul
       state: present
 
+- name: Install Consul UI
+  yum:
+      name: consul-ui
+      state: present
+  when:
+    consul_is_ui: True
+
 - name: Configure DNS to point to the local agent
   nmcli:
       conn_name: consul-dns
+      type: ethernet
       dns4:
           - 127.0.0.1
-          - "{{ ansible_dns['nameservers'][0] }}"
+          - 10.235.0.2
       state: present
+  ignore_errors: True
+
+- name: Delete the default Nginx Config
+  file:
+      name: /etc/nginx/conf.d/default
+      state: absent
+  notify: restart nginx
