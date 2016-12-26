@@ -17,8 +17,7 @@
   yum:
       name: consul-ui
       state: present
-  when:
-    consul_is_ui: True
+  when: consul_is_ui == True
 
 - name: Configure DNS to point to the local agent
   nmcli:
@@ -29,6 +28,11 @@
           - 10.235.0.2
       state: present
   ignore_errors: True
+
+- name: Install python-consul system wide
+  pip:
+      name: python-consul
+      state: installed
 
 - name: Delete the default Nginx Config
   file:

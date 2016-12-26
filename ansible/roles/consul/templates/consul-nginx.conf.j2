@@ -1,6 +1,6 @@
 server {
   server_name {{ consul_web_url | default(ansible_fqdn) }} {{ ansible_default_ipv4.address }};
-  root /var/www/consul/dist;
+  root /usr/share/consul-ui/;
 
   # --- listen ----------------------------------------------------------------
 
