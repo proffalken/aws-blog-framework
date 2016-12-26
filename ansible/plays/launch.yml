@@ -4,6 +4,7 @@
   become_user: root
   become_user: root
   roles:
+      - common_config
       - baseline_security
       - firewalld
       - ntp
