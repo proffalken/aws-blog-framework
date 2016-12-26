@@ -17,6 +17,17 @@
       mode: 0644
   notify: restart consul
 
+- name: consul create nginx config
+  template:
+    src: consul-nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/consul
+    owner: root
+    group: root
+    mode: 0644
+  when: consul_is_ui
+  notify:
+    - restart nginx
+
 - name: Configure the firewall rules for the Server
   firewalld:
     port: 8300-8302/tcp
