@@ -1,11 +1,38 @@
 ---
-- include: install.yml
-- { include: install-ui.yml, when: consul_is_ui == true }
-- include: dnsmasq.yml
-- include: consulate.yml
-- include: service.yml
+# include the distro-specific stuff
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-# Force a restart of the consul service at the end of every run
-- name: Restart Consul
-  command: /bin/true
+- include: rhel.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+
+ ## Generic installation parameters
+- name: Install the config file
+  template:
+      src: consul.json.j2
+      dest: /etc/consul/consul.json
+      owner: consul
+      group: consul
+      mode: 0644
   notify: restart consul
+
+- name: Configure the firewall rules for the Server
+  firewalld:
+    port: 8300-8302/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Configure the firewall rules so Swarm can connect
+  firewalld:
+    port: 8500/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Start the service
+  service:
+      name: consul
+      state: running
+      enabled: True

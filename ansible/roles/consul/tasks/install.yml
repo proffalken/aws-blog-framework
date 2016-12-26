@@ -78,29 +78,3 @@
     group={{consul_group}}
     mode=0755
 
-- name: consul config file
-  template: >
-    src=consul.json.j2
-    dest={{ consul_config_file }}
-    owner={{consul_user}}
-    group={{consul_group}}
-    mode=0755
-  notify: restart consul
-
-- name: Copy DNS configuration into resolvconf.d
-  copy: src=resolvconf_consul.conf dest=/etc/resolvconf/resolv.conf.d/head
-  notify: restart_resolvconf
-
-- name: Configure the firewall rules for the Server
-  firewalld:
-    port: 8300-8302/tcp
-    state: enabled
-    permanent: true
-    immediate: true
-
-- name: Configure the firewall rules so Swarm can connect
-  firewalld:
-    port: 8500/tcp
-    state: enabled
-    permanent: true
-    immediate: true
