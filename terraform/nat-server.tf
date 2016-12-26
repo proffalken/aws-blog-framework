@@ -7,7 +7,9 @@ resource "aws_instance" "nat" {
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
   tags = {
-    Name = "nat"
+    Name = "nat-aws-blog"
+    ansible_group_nat_instance = 1
+    ansible_group_consul_clients = 1
   }
   connection {
     user = "ec2-user"

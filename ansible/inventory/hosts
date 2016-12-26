@@ -1,9 +1,13 @@
+[tag_ansible_group_nat_instance_1]
 [tag_ansible_group_elasticsearch_servers_1]
 [tag_ansible_group_kibana_servers_1]
 [tag_ansible_group_logstash_servers_1]
 [tag_ansible_group_consul_clients_1]
 [tag_ansible_group_consul_servers_1]
 [tag_ansible_group_web_servers_1]
+
+[nat_instance:children]
+tag_ansible_group_nat_instance_1
 
 [es_servers:children]
 tag_ansible_group_elasticsearch_servers_1
