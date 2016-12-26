@@ -1,5 +1,13 @@
 ---
-# Redhat/CentOS specficic actions
+- name: Update the system to the latest updates
+  command: yum update -y
+
+# Redhat/CentOS/Amazon common packages
 - name: Ensure common packages are installed
+  yum:  name={{ item }} state=present
+  with_items: "{{ amazon_common_packages }}"
+
+# Redhat/CentOS specific packages
+- name: Ensure RHEL/CentOS specific packages are installed
   yum:  name={{ item }} state=present
   with_items: "{{ rhel_common_packages }}"

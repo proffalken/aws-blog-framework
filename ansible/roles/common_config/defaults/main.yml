@@ -1,9 +1,7 @@
 ---
 # defaults file for apache
 
-rhel_common_packages:
-    - NetworkManager
-    - NetworkManager-glib
+amazon_common_packages:
     - libselinux-python
     - python-devel
     - python-pip
@@ -27,7 +25,11 @@ rhel_common_packages:
     - wget
     - zip
 
-deb_common_packages: 
-    - python-apt 
+rhel_common_packages:
+    - NetworkManager
+    - NetworkManager-glib
+
+deb_common_packages:
+    - python-apt
     - apt-transport-https
     - git
