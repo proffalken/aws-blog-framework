@@ -1,0 +1,22 @@
+---
+# Redhat/CentOS for consul
+- name: Install the repo
+  template:
+      src: consul.repo
+      dest: /etc/yum.repos.d/consul.repo
+      owner: root
+      group: root
+      mode: 0644
+
+- name: Install Consul
+  yum:
+      name: consul
+      state: present
+
+- name: Configure DNS to point to the local agent
+  nmcli:
+      conn_name: consul-dns
+      dns4:
+          - 127.0.0.1
+          - "{{ ansible_dns['nameservers'][0] }}"
+      state: present
