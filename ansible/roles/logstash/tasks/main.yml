@@ -14,7 +14,7 @@
   copy: src=index.template.json dest=/etc/logstash/index.template.json
 
 - name: Install any plugins required
-  command: "/opt/logstash/bin/plugin install {{ item }}"
+  command: "/usr/share/logstash/bin/logstash-plugin install {{ item }}"
   ignore_errors: true
   with_items:
     - logstash-output-elasticsearch
