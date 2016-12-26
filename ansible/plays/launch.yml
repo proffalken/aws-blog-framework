@@ -4,13 +4,13 @@
   become_user: root
   become_user: root
   roles:
+      - yum
       - common_config
       - baseline_security
       - firewalld
       - ntp
       - rsyslog
       - sudo
-      - yum
   vars:
     use_logstash: True
     dns_servers: ['127.0.0.1','8.8.8.8']
