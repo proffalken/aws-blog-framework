@@ -21,7 +21,7 @@
 
 - name: Configure DNS to point to the local agent
   nmcli:
-      conn_name: consul-dns
+      conn_name: consul-eth0
       type: ethernet
       dns4:
           - 127.0.0.1
