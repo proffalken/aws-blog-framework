@@ -10,6 +10,18 @@
 - name: Start Elasticsearch Service
   service: name=elasticsearch state=running enabled=yes
 
+- name: Format the extra file storage
+  filesystem:
+    fstype: ext4
+    dev: /dev/xvdl
+
+- name: Mount the extra storage
+  mount:
+    name: /var/lib/elasticsearch
+    src: /dev/xvdl1
+    fstype: ext4
+    state: present
+
 - name: Copy the elasticsearch config into place
   template: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
   notify: restart_elasticsearch
@@ -21,10 +33,10 @@
   when: consul_enabled and consul_enabled == True
 
 - name: Enable the relevant plugins
-  command: "/usr/share/elasticsearch/bin/elasticsearch-plugin install {{ item }} --batch"
-  ignore_errors: true
+  command: "/usr/share/elasticsearch/bin/elasticsearch-plugin install --batch {{ item }}"
   with_items:
     - x-pack
+  ignore_errors: true
 
 - name: Enable traffic for all inbound connections
   firewalld:
