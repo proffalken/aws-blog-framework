@@ -11,3 +11,4 @@
 - name: Ensure RHEL/CentOS specific packages are installed
   yum:  name={{ item }} state=present
   with_items: "{{ rhel_common_packages }}"
+  when: ansible_distribution == "CentOS" or ansible_distribution == "Red Hat Enterprise Linux"
