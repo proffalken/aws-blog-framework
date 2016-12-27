@@ -16,6 +16,12 @@
   copy: src=default.conf dest=/etc/nginx/conf.d/default.conf owner=root group=root mode=0644
   notify: restart nginx
 
+# Set (httpd_can_network_connect) flag on and keep it persistent across reboots
+- seboolean:
+    name: httpd_can_network_connect
+    state: yes
+    persistent: yes
+
 - name: Create the sites-available and sites-enabled folders
   file:
     name: "/etc/nginx/{{ item }}"
