@@ -14,6 +14,7 @@
       owner: root
       group: root
       mode: 0644
+  notify: restart kibana
 
 - name: Start the kibana service
   service: name=kibana state=started
