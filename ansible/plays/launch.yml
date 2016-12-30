@@ -70,9 +70,9 @@
   become: True
   become_user: root
   roles:
-   - java
-   - rsyslog
-   - logstash
+   - { role: java, tags: ['logstash'] }
+   - { role: rsyslog, tags: ['logstash'] }
+   - { role: logstash, tags: ['logstash'] }
   vars:
     logstashserver: True
     elasticsearch_cluster_name: "logstash"
