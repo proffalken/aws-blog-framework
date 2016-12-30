@@ -26,7 +26,7 @@
   when: consul_enabled == True
 
 - name: Install and enable the kibana plugins
-  command: "/usr/share/kibana/bin/kibana-plugin install --batch {{ item }}"
+  command: "/usr/share/kibana/bin/kibana-plugin install {{ item }}"
   ignore_errors: true
   with_items:
     - xpack
