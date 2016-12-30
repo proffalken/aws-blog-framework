@@ -3,8 +3,8 @@ node.name: {{ ansible_hostname }}
 discovery.zen.ping.unicast.hosts: [{% for node in groups['es_servers'] %}"{{ node }}"{% if not loop.last %},{% endif %}{% endfor %}]
 network.bind_host: _{{elasticsearch_bind_interface|default('eth0')}}:ipv4_
 network.publish_host: _{{elasticsearch_bind_interface|default('eth0')}}:ipv4_
-xpack.security.transport.filter.allow: [{% for node in groups['kibana_servers'] %}"{{ node }}"{% if not loop.last %},{% endif %}{% endfor %}]
-xpack.security.transport.filter.deny: _all
+#xpack.security.transport.filter.allow: [{% for node in groups['kibana_servers'] %}"{{ node }}"{% if not loop.last %},{% endif %}{% endfor %},{% for node in groups['es_servers'] %}"{{ node }}"{% if not loop.last %},{% endif %}{% endfor %}]
+#xpack.security.transport.filter.deny: _all
 xpack:
   security:
     authc:
