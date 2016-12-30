@@ -38,6 +38,15 @@
     - x-pack
   ignore_errors: true
 
+- name: Copy the generic system key for x-pack - CHANGE THIS FOR PRODUCTION!
+  copy:
+    src: system_key
+    dest: /etc/elasticsearch/x-pack/system_key
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0640
+  notify: restart_elasticsearch
+
 - name: Enable traffic for all inbound connections
   firewalld:
     port: 9200-9305/tcp
