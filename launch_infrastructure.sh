@@ -60,7 +60,7 @@ EOM
   ansible-playbook -i inventory/ plays/launch.yml --extra-vars "@ansible_extra_vars.json"
   echo "Setup Complete"
   cat <<-EOM "You can access your new system at the following URLs:
-  
+
   Consul: http://$CONSUL_WEB_URL
   Kibana: http://$KIBANA_WEB_URL
   Website: http://$SITE_WEB_URL
