@@ -11,6 +11,20 @@
   yum: name=elasticsearch state=present
 
 - name: Set the Elasticsearch Defaults
-  template: src=etc_default_elasticsearch dest=/etc/sysconfig/elasticsearch owner=root group=root mode=644
+  template:
+    src: etc_default_elasticsearch
+    dest: /etc/sysconfig/elasticsearch
+    owner: root
+    group: root
+    mode: 644
+  notify: restart_elasticsearch
+
+- name: Set the Elasticsearch JVM Defaults
+  template:
+    src: jvm.options.j2
+    dest: /etc/elasticsearch/jvm.options
+    owner: root
+    group: root
+    mode: 644
   notify: restart_elasticsearch
 
