@@ -33,13 +33,13 @@
   template: src={{ item }} dest=/etc/logstash/conf.d/{{ item }} owner=root group=root mode=0644
   notify: Restart logstash
   with_items:
-    - 16-aws_s3_buckets.conf
+    # - 16-aws_s3_buckets.conf
     - 30-elasticsearch-output.conf
 
 - name: Register the consul service
   consul:
-      service_name: logstash
-      service_port: 5154
+      service_name: logs
+      service_port: 1514
   when: consul_enabled == True
 
 - name: Enable firewall ports for Windows logs
