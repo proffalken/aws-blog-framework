@@ -19,15 +19,22 @@
       state: present
   when: consul_is_ui == True
 
-- name: Configure DNS to point to the local agent
-  nmcli:
-      conn_name: consul-eth0
-      type: ethernet
-      dns4:
-          - 127.0.0.1
-          - 10.235.0.2
+  #- name: Configure DNS to point to the local agent
+  #  nmcli:
+  #      conn_name: eth0
+  #      type: ethernet
+  #      dns4:
+  #          - 127.0.0.1
+  #          - 10.235.0.2
+  #      state: present
+  #  ignore_errors: True
+
+- name: Use lineinfile to insert DNS entry
+  lineinfile:
+      dest: /etc/resolv.conf
       state: present
-  ignore_errors: True
+      line: 'nameserver 127.0.0.1'
+      insertafter: '^search '
 
 - name: Install python-consul system wide
   pip:
