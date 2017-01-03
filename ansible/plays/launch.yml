@@ -59,13 +59,6 @@
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"
 
-- hosts: ec2
-  become: True
-  become_user: root
-  tasks:
-    - name: Restart the consul service on all nodes to pickup new configs
-      service: name=consul state=restarted
-
 - hosts: logstash_servers
   become: True
   become_user: root
@@ -80,13 +73,6 @@
     consul_enabled: True
     consul_bind_address: "0.0.0.0"
     consul_datacenter: "aws-blog"
-
-- hosts: ec2
-  become: True
-  become_user: root
-  tasks:
-    - name: Restart the consul service on all nodes to pickup new configs
-      service: name=consul state=restarted
 
 - hosts: kibana_servers
   become: True
