@@ -7,6 +7,7 @@
 - include: rhel.yml
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
+
 - name: Copy the Kibana config
   template:
       src: kibana.yml
@@ -26,10 +27,14 @@
   when: consul_enabled == True
 
 - name: Install and enable the kibana plugins
-  command: "/usr/share/kibana/bin/kibana-plugin install {{ item }}"
+  become: kibana
+  command: "./bin/kibana-plugin install {{ item }}"
+  args:
+    chdir: /usr/share/kibana
   ignore_errors: true
   with_items:
     - xpack
+  notify: restart kibana
 
 - name: Open the firewall for Kibana
   firewalld:
