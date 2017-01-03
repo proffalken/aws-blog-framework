@@ -4,7 +4,7 @@ resource "aws_instance" "kibana" {
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "t2.medium"
   subnet_id = "${aws_subnet.private-aws-blog.id}"
-  security_groups = ["${aws_security_group.kibana.id}"]
+  vpc_security_group_ids = ["${aws_security_group.kibana.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
   tags = { 
@@ -20,7 +20,7 @@ resource "aws_instance" "elasticsearch" {
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "m3.large"
   subnet_id = "${aws_subnet.private-aws-blog.id}"
-  security_groups = ["${aws_security_group.elasticsearch.id}"]
+  vpc_security_group_ids = ["${aws_security_group.elasticsearch.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
   ebs_block_device {
@@ -43,7 +43,7 @@ resource "aws_instance" "logstash" {
   ami = "${lookup(var.centos_amis, var.region)}"
   instance_type = "t2.medium"
   subnet_id = "${aws_subnet.private-aws-blog.id}"
-  security_groups = ["${aws_security_group.logstash.id}"]
+  vpc_security_group_ids = ["${aws_security_group.logstash.id}", "${aws_security_group.elasticsearch.id}"]
   key_name = "${aws_key_pair.aws-blog-deployer.key_name}"
   source_dest_check = false
   tags = { 
