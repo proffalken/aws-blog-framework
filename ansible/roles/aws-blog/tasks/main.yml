@@ -31,8 +31,8 @@
 - name: Upload the Private SSH key for deployments
   become: True
   become_user: aws-blog
-  template:
-      src: sshprivkey.j2
+  copy:
+      src: "{{ deploy_private_key }}"
       dest: /home/aws-blog/.ssh/id_rsa
       owner: aws-blog
       group: aws-blog
@@ -41,8 +41,8 @@
 - name: Upload the Public SSH Key for deployments
   become: True
   become_user: aws-blog
-  template:
-      src: sshpubkey.j2
+  copy:
+      src: "{{ deploy_public_key }}"
       dest: /home/aws-blog/.ssh/id_rsa.pub
       owner: aws-blog
       group: aws-blog
