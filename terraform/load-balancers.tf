@@ -47,7 +47,7 @@ resource "aws_elb" "kibana" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 30
-    target = "HTTP:5601/"
+    target = "TCP:5601"
     interval = 60
   }
   access_logs {
