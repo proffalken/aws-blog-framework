@@ -10,8 +10,32 @@
 - name: Make sure the logstash directory exists
   file: name=/etc/logstash state=directory owner=root group=root mode=0755
 
-- name: Copy up the index template
-  copy: src=index.template.json dest=/etc/logstash/index.template.json
+- name: Create the logstash user for access to Elasticsearch
+  uri: 
+    url: http://elasticsearch.service.consul:9200/_xpack/security/user/logstash_internal
+    method: PUT
+    user: "elastic"
+    password: "changeme"
+    body: {"password" : "changeme", "roles" : [ "logstash_writer"], "full_name" : "Internal Logstash User"}
+    body_format: json
+
+- name: Give the logstash user the correct permissions to access Elasticsearch
+  uri: 
+    url: http://elasticsearch.service.consul:9200/_xpack/security/role/logstash_writer
+    method: PUT
+    user: "elastic"
+    password: "changeme"
+    body: { "cluster": ["manage_index_templates", "monitor"], "indices": [  { "names": [ "logstash-*" ], "privileges": ["write","delete","create_index"] }]}
+    body_format: json
+
+- name: Create the logstash user for access to Elasticsearch
+  uri: 
+    url: http://elasticsearch.service.consul:9200/_xpack/security/user/logstash_internal
+    method: PUT
+    user: "elastic"
+    password: "changeme"
+    body: {"password" : "changeme", "roles" : [ "logstash_writer"], "full_name" : "Internal Logstash User"}
+    body_format: json
 
 - name: Install any plugins required
   command: "/usr/share/logstash/bin/logstash-plugin install {{ item }}"
