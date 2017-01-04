@@ -25,6 +25,17 @@ variable "private_subnet_cidr" {
   description = "CIDR for private subnet"
   default     = "10.235.1.0/24"
 }
+
+variable "mysql-az1_subnet_cidr" {
+  description = "CIDR for DB AZ1 subnet"
+  default     = "10.235.2.0/24"
+}
+
+variable "mysql-az2_subnet_cidr" {
+  description = "CIDR for DB AZ2 subnet"
+  default     = "10.235.3.0/24"
+}
+
 variable "deploy_key" {
   description = "The SSH Key to use for deployments"
 }

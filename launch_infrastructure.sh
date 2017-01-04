@@ -36,6 +36,7 @@ if [ "$TF_EXIT_CODE" -eq "0" ]; then
   KIBANA_WEB_URL=$(terraform output -state=$TF_STATE_FILE kibana_elb)
   SITE_WEB_URL=$(terraform output -state=$TF_STATE_FILE web_elb)
   VPC_CIDR=$(terraform output -state=$TF_STATE_FILE vpc_subnet)
+  WEB_MYSQL_SERVER=$(terraform output -state=$TF_STATE_FILE web_database_server)
   echo "Getting the DNS Servers for your VPC"
   VPC_IP=$(echo ${VPC_CIDR} | cut -d '/' -f 1)
   ipoct1=$(echo ${VPC_IP} | tr "." " " | awk '{ print $1 }')
@@ -53,20 +54,14 @@ if [ "$TF_EXIT_CODE" -eq "0" ]; then
     "vpc_cidr": "$VPC_CIDR", 
     "aws_access_key": "$TF_VAR_access_key", 
     "aws_secret_key": "$TF_VAR_secret_key", 
-    "vpc_dns_server": "$VPC_DNS"
+    "vpc_dns_server": "$VPC_DNS",
+    "web_mysql_server": "$WEB_MYSQL_SERVER"
   }
 EOM
   echo "Running Ansible"
   ansible-playbook -i inventory/ plays/launch.yml --extra-vars "@ansible_extra_vars.json"
   echo "Setup Complete"
-  cat <<-EOM "You can access your new system at the following URLs:
-
-  Consul: http://$CONSUL_WEB_URL
-  Kibana: http://$KIBANA_WEB_URL
-  Website: http://$SITE_WEB_URL
-
-  Have Fun! :)"
-EOM
+  echo -e "You can access your new system at the following URLs:\n\n\tConsul: http://$CONSUL_WEB_URL\n\tKibana: http://$KIBANA_WEB_URL\n\tWebsite: http://$SITE_WEB_URL\n\nHave Fun! :)"
   exit 0
 else
   echo "Terraform Failed to complete. Please review the logs and re-run"

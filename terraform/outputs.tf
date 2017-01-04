@@ -26,3 +26,7 @@ output "consul_elb" {
 output "vpc_subnet" {
   value = "${var.vpc_cidr}"
 }
+
+output "web_database_server" {
+  value = "${aws_db_instance.aws-blog-mysql.address}"
+}
