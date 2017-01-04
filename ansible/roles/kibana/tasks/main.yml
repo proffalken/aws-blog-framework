@@ -17,9 +17,6 @@
       mode: 0644
   notify: restart kibana
 
-- name: Start the kibana service
-  service: name=kibana state=started
-
 - name: Register the consul service
   consul:
       service_name: kibana
@@ -27,7 +24,6 @@
   when: consul_enabled == True
 
 - name: Install and enable the kibana plugins
-  become: kibana
   command: "./bin/kibana-plugin install {{ item }}"
   args:
     chdir: /usr/share/kibana
@@ -36,9 +32,22 @@
     - xpack
   notify: restart kibana
 
+- name: Destroy and rebuild the caches
+  file:
+    name: "/usr/share/kibana/optimize/{{ item }}"
+    state: absent
+  with_items:
+    - bundles
+    - .babelcache.json
+  notify: restart kibana
+
 - name: Open the firewall for Kibana
   firewalld:
     port: 5601/tcp
     immediate: true
     permanent: true
     state: enabled
+
+- name: Start the kibana service
+  service: name=kibana state=started
+
