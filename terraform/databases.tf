@@ -15,4 +15,5 @@ resource "aws_db_instance" "aws-blog-mysql" {
   password             = "bloggymcblogface"
   db_subnet_group_name = "${aws_db_subnet_group.aws-blog_db_subnet_group.name}"
   parameter_group_name = "default.mysql5.7"
+  vpc_security_group_ids = ["${aws_security_group.rds.id}"]
 }
