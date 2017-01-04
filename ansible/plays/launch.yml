@@ -106,5 +106,4 @@
   become: True
   become_user: root
   roles:
-    - { role: nginx, tags: ['aws-blog', 'nginx'] }
     - { role: aws-blog, tags: ['aws-blog'] }
