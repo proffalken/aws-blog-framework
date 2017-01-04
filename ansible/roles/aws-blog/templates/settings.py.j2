@@ -10,7 +10,7 @@ class Config(object):
 
 
     # mail settings
-    MAIL_SERVER = '{{ smtp_server }}'
+    MAIL_SERVER = '{{ smtp_server | default("localhost") }}'
     MAIL_PORT = 25
 
     # mail authentication
@@ -28,7 +28,7 @@ class DevelopmentConfig(Config):
     SECRET_KEY = "asgSfsf3Xd8ffy]fw8vfd0zbvssqwertsd4sdwe"
 
     # datebase
-    SQLALCHEMY_DATABASE_URI = "mysql://{{ mysql_user }}:{{ mysql_password }}@{{ hostvars[groups['mysql_servers'][0]]['ansible_ipv4']['default_address'] }}/new-blog"
+    SQLALCHEMY_DATABASE_URI = "mysql://awsblog:bloggymcblogface@{{ web_mysql_server }}/awsblog"
     SQLALCHEMY_ECHO = True
 
 

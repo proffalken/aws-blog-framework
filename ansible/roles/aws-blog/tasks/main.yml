@@ -32,7 +32,7 @@
   become: True
   become_user: aws-blog
   copy:
-      src: "{{ deploy_private_key }}"
+      src: "{{ deploy_private_ssh_key }}"
       dest: /home/aws-blog/.ssh/id_rsa
       owner: aws-blog
       group: aws-blog
@@ -42,11 +42,19 @@
   become: True
   become_user: aws-blog
   copy:
-      src: "{{ deploy_public_key }}"
+      src: "{{ deploy_public_ssh_key }}"
       dest: /home/aws-blog/.ssh/id_rsa.pub
       owner: aws-blog
       group: aws-blog
       mode: 0644
+
+- name: Create the SSH config
+  template:
+    src: ssh_config
+    dest: /home/aws-blog/.ssh/config
+    owner: aws-blog
+    group: aws-blog
+    mode: 0640
 
 - name: Create the application home directory
   file:
@@ -57,14 +65,13 @@
       state: directory
 
 - name: Clone the sourcecode
-  become: True
-  become_user: aws-blog
+  become: true
+  become_user: "aws-blog"
   git:
-      repo: git@bitbucket.com:proffalken/flask-blog
-      dest: /opt/webapps/aws-blog
-      accept_hostkey: True
-      key_file: /home/aws-blog/.ssh/id_rsa
-
+    repo: git@github.com:proffalken/flask-blog.git
+    dest: /opt/webapps/aws-blog
+    accept_hostkey: yes
+    key_file: /home/aws-blog/.ssh/id_rsa
 
 - name: Configure the application
   template:
@@ -72,3 +79,13 @@
       dest: /opt/webapps/aws-blog/settings.py
       owner: aws-blog
       group: aws-blog
+
+- name: Install the requirements into a virtual environment
+  pip:
+    requirements: /opt/webapps/aws-blog/requirements.txt
+    virtualenv: /opt/webapps/aws-blog/venv
+
+- name: Setup the database
+  command: /opt/webapps/aws-blog/venv/python /opt/webapps/aws-blog/manage.py initdb
+  become: True
+  become_user: aws-blog
