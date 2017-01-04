@@ -24,6 +24,8 @@
   when: consul_enabled == True
 
 - name: Install and enable the kibana plugins
+  become: true
+  become_user: kibana
   command: "./bin/kibana-plugin install {{ item }}"
   args:
     chdir: /usr/share/kibana
