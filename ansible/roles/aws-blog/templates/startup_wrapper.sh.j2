@@ -1,0 +1,8 @@
+#!/bin/bash
+
+HOMEDIR=/opt/webapps/aws-blog
+VENVDIR=$HOMEDIR/env/
+
+cd $HOMEDIR
+source $VENVDIR/bin/activate
+$HOMEDIR/manage.py runserver

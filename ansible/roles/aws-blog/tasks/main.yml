@@ -1,6 +1,13 @@
 ---
 # tasks file for aws-blog
 #
+- name: Install the RPM dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ aws_blog_rpm_deps }}"
+
 - name: Create the group for the user
   group:
       name: aws-blog
@@ -76,7 +83,7 @@
 - name: Configure the application
   template:
       src: settings.py.j2
-      dest: /opt/webapps/aws-blog/settings.py
+      dest: /opt/webapps/aws-blog/app/settings.py
       owner: aws-blog
       group: aws-blog
 
@@ -86,6 +93,27 @@
     virtualenv: /opt/webapps/aws-blog/venv
 
 - name: Setup the database
-  command: /opt/webapps/aws-blog/venv/python /opt/webapps/aws-blog/manage.py initdb
+  command: python /opt/webapps/aws-blog/manage.py initdb
   become: True
   become_user: aws-blog
+  vars:
+    ansible_python_interpreter: /opt/webapps/aws-blog/venv/bin/python
+
+- name: Copy in the wrapper script
+  template:
+    src: startup_wrapper.sh.j2
+    dest: /usr/local/bin/run_aws_blog.sh
+    mode: 0755
+
+- name: Copy in the init script
+  template:
+    src: systemd.j2
+    dest: /usr/lib/systemd/system/aws-blog.service
+    mode: 0755
+
+- name: Reload SYSTEMD
+  systemd:
+    daemon_reload: True
+    name: aws-blog
+    enabled: true
+    state: started

@@ -1,0 +1,10 @@
+[Unit]
+Description=Flask Blog
+
+[Service]
+User=aws-blog
+Group=aws-blog
+ExecStart=/usr/local/bin/run_aws_blog.sh
+
+[Install]
+WantedBy=multi-user.target

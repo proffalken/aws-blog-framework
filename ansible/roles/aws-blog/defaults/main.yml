@@ -1,2 +1,6 @@
 ---
 # defaults file for aws-blog
+aws_blog_rpm_deps:
+  - gcc
+  - python-virtualenv
+  - mariadb-devel
