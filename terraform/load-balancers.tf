@@ -4,7 +4,7 @@ resource "aws_elb" "web" {
   subnets = ["${aws_subnet.public-aws-blog.id}"]
   security_groups = ["${aws_security_group.default.id}", "${aws_security_group.elb_access.id}"]
   listener {
-    instance_port = 80
+    instance_port = 5555
     instance_protocol = "http"
     lb_port = 80
     lb_protocol = "http"
@@ -13,7 +13,7 @@ resource "aws_elb" "web" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     timeout = 30
-    target = "HTTP:80/"
+    target = "HTTP:5555/"
     interval = 60
   }
   access_logs {

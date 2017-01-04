@@ -117,3 +117,10 @@
     name: aws-blog
     enabled: true
     state: started
+
+- name: Openup the aws-blog firewall
+  firewalld:
+    state: enabled
+    immediate: true
+    permanent: true
+    port: 5555/tcp
